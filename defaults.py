@@ -1,14 +1,13 @@
-from enum import Enum
 
 
-class Attribute(Enum):
+class Attribute:
     EGO = 20
     HEALTH = 40
     STRENGTH = 40
     HAPPINESS = 20
     INTELLIGENCE = 20
 
-class Cost(Enum):
+class Cost:
     EGO = 20
     HEALTH = 20
     STRENGTH = 5
@@ -18,8 +17,11 @@ class Cost(Enum):
     
 
 
-class Threshold(Enum):
+class Threshold:
     HEALTH  = 10
     STRENGTH = 10
     SURVIVAL = 30
-    POPULATION = 1000
+    POPULATION = 100
+
+class Index:
+    FITNESS = 50
