@@ -15,7 +15,7 @@ if __name__ == "__main__":
     
     stats = Statistics(nature.male_population, nature.female_population)
     print('##########################')
-    print(f'Total Population: {len(nature.total_population)}')
+    print(f'Total Population: {nature.total_population}')
     print(f'Total Fit Population %: {stats.calculate_total_fit_percent()}')
     print(f'Total Male: {len(nature.male_population)}')
     print(f'Total Fit Male %: {stats.calculate_total_fit_male_percent()}')

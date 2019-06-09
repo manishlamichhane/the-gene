@@ -5,16 +5,12 @@ from individual import Female, Male
 
 class Nature:
     def __init__(self, *args, **kwargs):
-        self.male_population = [Male(gender=Gender.MALE) for i in range(10)]
-        self.female_population = [Female(gender=Gender.FEMALE) for i in range(10)]
+        self.male_population = [Male(gender=Gender.MALE) for i in range(100)]
+        self.female_population = [Female(gender=Gender.FEMALE) for i in range(50)]
     
     @property
     def total_population(self):
         return len(self.male_population) + len(self.female_population)
-    
-    @staticmethod
-    def is_strong_enough(individual, strength=Threshold.STRENGTH):
-        return individual.strength > strength
 
     @staticmethod
     def categorise_aggression(first, second):
@@ -36,9 +32,9 @@ class Nature:
 
     @staticmethod
     def choose_alive_male(male_population):
+        # NOTE(Manish): Try using concepts of Streams from Java
         choosen_male = random.choices(male_population, k=2)
-        # print(choosen_male[0].__dict__)
-        # print(choosen_male[1].__dict__)
+
         if not (choosen_male[0].is_alive and choosen_male[1].is_alive):
             # NOTE(Manish): Can lead to infinite recursion if all male are dead
             Nature.choose_alive_male(male_population)
@@ -81,8 +77,6 @@ class Nature:
         self.female_population = [female for female in self.female_population if female.is_alive is True]
 
     def age(self):
-        for individual in zip(self.male_population, self.female_population):
+        for individual in self.male_population + self.female_population:
             if individual.is_alive:
                 individual.grow_old()
-
-        
