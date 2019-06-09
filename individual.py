@@ -10,6 +10,7 @@ class Individual:
         self.age = 0
         self.is_alive = True
         self.gender = kwargs.get('gender') or random.choice(Gender.CHOICES)
+        self.is_fertile = True
         self.ego = kwargs.get('ego') or random.choice(range(0, 100, 5))
         self.health = kwargs.get('health') or random.choice(range(20, 100, 5))
         self.strength = kwargs.get('strength') or random.choice(range(20, 100, 5))
@@ -18,12 +19,13 @@ class Individual:
     
     def grow_old(self):
         self.age += 1
+        self.health += defaults.Cost.HEALTH
+        self.strength += defaults.Cost.STRENGTH
         self.intelligence += defaults.Cost.INTELLIGENCE
-        self.strength -= defaults.Cost.STRENGTH
     
     @property
     def aggression(self):
-        return self.health + self.strength + self.ego - self.intelligence
+        return  (self.strength + self.ego) * self.health - self.intelligence
     
     @property
     def fitness(self):
@@ -31,17 +33,18 @@ class Individual:
 
     def attack(self, opponent):
         self.ego += opponent.ego
-        self.strength -= defaults.Cost.STRENGTH
         self.health -= defaults.Cost.HEALTH
+        self.strength -= defaults.Cost.STRENGTH
         self.happiness += defaults.Cost.HAPPINESS
         self.intelligence += defaults.Cost.INTELLIGENCE
         
         opponent.is_alive = False
+        print(f'Self: {self.is_alive} Opponent: {opponent.is_alive}')
 
 
 class Female(Individual):
     def __init__(self, **kwargs):
-        self.is_fertile = kwargs.pop('is_fertile ') if 'is_fertile' in kwargs.keys() else random.choice((True, False))
+        #self.is_fertile = kwargs.pop('is_fertile ') if 'is_fertile' in kwargs.keys() else random.choice((True, False))
         self.is_pregnent = False
         self.feminity = random.choice(range(0, 100, 5))  # NOTE(Manish): determins sex of off-spring
         super().__init__(**kwargs)
@@ -49,6 +52,6 @@ class Female(Individual):
 
 class Male(Individual):
     def __init__(self, **kwargs):
-        self.is_fertile = kwargs.pop('is_fertile ') if 'is_fertile' in kwargs.keys() else random.choice((True, False))
+        #self.is_fertile = kwargs.pop('is_fertile ') if 'is_fertile' in kwargs.keys() else random.choice((True, False))
         self.masculinity = random.choice(range(0, 100, 5)) # NOTE(Manish): determins sex of off-spring
         super().__init__(**kwargs)

@@ -24,4 +24,4 @@ class Threshold:
     POPULATION = 100
 
 class Index:
-    FITNESS = 50
+    FITNESS = 70
