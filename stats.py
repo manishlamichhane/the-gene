@@ -16,10 +16,16 @@ class Statistics:
         return counter / len(population) * 100
 
     def calculate_total_fit_percent(self):
+        if not self.population:
+            return 0
         return self._calculate_fitness_percent(self.population)
     
     def calculate_total_fit_male_percent(self):
+        if not self.male_population:
+            return 0
         return self._calculate_fitness_percent(self.male_population)
     
     def calculate_total_fit_female_percent(self):
+        if not self.male_population:
+            return 0
         return self._calculate_fitness_percent(self.female_population)

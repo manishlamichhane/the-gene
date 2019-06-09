@@ -5,8 +5,8 @@ from individual import Female, Male
 
 class Nature:
     def __init__(self, *args, **kwargs):
-        self.male_population = [Male(gender=Gender.MALE) for i in range(100)]
-        self.female_population = [Female(gender=Gender.FEMALE) for i in range(50)]
+        self.male_population = [Male(gender=Gender.MALE) for i in range(30)]
+        self.female_population = [Female(gender=Gender.FEMALE) for i in range(30)]
     
     @property
     def total_population(self):
@@ -34,10 +34,10 @@ class Nature:
     def choose_alive_male(male_population):
         # NOTE(Manish): Try using concepts of Streams from Java
         choosen_male = random.choices(male_population, k=2)
-
         if not (choosen_male[0].is_alive and choosen_male[1].is_alive):
             # NOTE(Manish): Can lead to infinite recursion if all male are dead
             Nature.choose_alive_male(male_population)
+        print(choosen_male[0].is_alive, choosen_male[1].is_alive)
         return choosen_male
 
 
@@ -70,6 +70,7 @@ class Nature:
         if male.is_fertile and female.is_fertile:
             female.is_pregnent = True
             # NOTE(Manish): Offspring will have dominant parents gender
+            print('Child Added')
             return Male(gender=Gender.MALE) if male.masculinity > female.feminity else Female(gender=Gender.FEMALE)
 
     def select(self):
