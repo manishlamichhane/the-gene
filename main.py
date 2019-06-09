@@ -6,12 +6,16 @@ from stats import Statistics
 if __name__ == "__main__":
     nature = Nature()
     round = 1
-    while not nature.total_population >= Threshold.POPULATION:
+    fertileMale = nature.getFertileMalePop()
+    fertileFeMale = nature.getFertileMalePop()
+    while not nature.total_population >= Threshold.POPULATION and fertileMale > 0 and fertileFeMale > 0:
         print(f'Round: {round}')
+        nature.showFertilePopulation()
         nature.enforce_darwinism()
         nature.select()
         nature.age()
         round += 1
+        fertileMale = nature.getFertileMalePop()
     
     stats = Statistics(nature.male_population, nature.female_population)
     print('##########################')

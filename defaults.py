@@ -21,7 +21,7 @@ class Threshold:
     HEALTH  = 10
     STRENGTH = 10
     SURVIVAL = 30
-    POPULATION = 100
+    POPULATION = 200
 
 class Index:
     FITNESS = 50
