@@ -6,7 +6,7 @@ class Statistics:
         self.fitness_index = kwargs.get('fitness_index') or Index.FITNESS
         self.male_population = male_population
         self.female_population = female_population
-        self.population = zip(self.male_population, self.female_population)
+        self.population = self.male_population + self.female_population
     
     def _calculate_fitness_percent(self, population):
         counter = 0
