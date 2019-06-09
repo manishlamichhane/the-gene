@@ -39,7 +39,7 @@ class Nature:
         choosen_male = random.choices(male_population, k=2)
         # print(choosen_male[0].__dict__)
         # print(choosen_male[1].__dict__)
-        if not (choosen_male[0].is_alive or choosen_male[1].is_alive):
+        if not (choosen_male[0].is_alive and choosen_male[1].is_alive):
             # NOTE(Manish): Can lead to infinite recursion if all male are dead
             Nature.choose_alive_male(male_population)
         return choosen_male
