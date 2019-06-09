@@ -12,7 +12,7 @@ class Cost:
     HEALTH = 20
     STRENGTH = 5
     HAPPINESS = 10
-    REPRODUCTION = 10
+    REPRODUCTION = 5
     INTELLIGENCE  = 10
     
 

@@ -63,9 +63,11 @@ class Nature:
     def reproduce(self, male, female):
         male.strength -= Cost.REPRODUCTION
         male.happiness += Cost.HAPPINESS
+        male.health += Cost.HEALTH
 
-        female.happiness += Cost.HAPPINESS
         female.strength -= Cost.REPRODUCTION
+        female.happiness += Cost.HAPPINESS
+        female.health += Cost.HEALTH
 
         if male.is_fertile and female.is_fertile:
             female.is_pregnent = True

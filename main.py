@@ -22,8 +22,8 @@ if __name__ == "__main__":
         nature.enforce_darwinism()
         nature.select()
         if not len(nature.male_population) >= 2:
-            print('Male or Female population is empty')
             generate_stats(nature)
+            print('Best Male Identified')
             print(nature.male_population[0].__dict__)
             break
         nature.age()

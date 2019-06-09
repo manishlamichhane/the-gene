@@ -32,7 +32,7 @@ class Individual:
 
     def attack(self, opponent):
         self.ego += opponent.ego
-        self.strength -= defaults.Cost.STRENGTH
+        self.strength += defaults.Cost.STRENGTH
         self.health -= defaults.Cost.HEALTH
         self.happiness += defaults.Cost.HAPPINESS
         self.intelligence += defaults.Cost.INTELLIGENCE
