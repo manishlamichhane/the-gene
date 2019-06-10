@@ -25,3 +25,14 @@ class Threshold:
 
 class Index:
     FITNESS = 50
+
+class Ancestors:
+    # They are like Adam and Eve, they don't have any parents
+    ORIG_POP = 16
+
+    # Direct descendants of the ORIG_POP
+    INITIAL_POP = 160
+
+    # Percentage of general male population
+    MALE_PCT = 60
+
