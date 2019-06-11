@@ -7,6 +7,9 @@ from choices import Gender
 from collections import namedtuple
 
 class Individual:
+    def __str__(self):
+        return self.name if self.name else str(self.id)
+
     def __init__(self, parents=(), **kwargs):
         # for logging and debugging
         self.id = uuid.uuid4()
@@ -17,6 +20,7 @@ class Individual:
         self.happiness = kwargs.get('happiness') or random.choice(range(0, 100, 5))
         self.intelligence = kwargs.get('intelligence') or random.choice(range(0, 100, 5))
         self.parents = parents
+        self.name = kwargs.get('name') or ''
         if parents and len(parents) == 2:
             # Index 0 is for father
             parents[0].children.append(self)

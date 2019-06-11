@@ -1,4 +1,6 @@
 import random
+from collections import deque
+
 from choices import Gender
 from defaults import Cost, Threshold, Ancestors
 from individual import Female, Male, Individual
@@ -65,35 +67,92 @@ class Nature:
         return strong
 
     @staticmethod
-    def direct_descendants(descendants, individual):
-        """ Checks if individual is one of the descendants, or a descendant of descendants' children"""
-
-        if not descendants:
-            return False
-        else:
-            if individual in descendants:
-                return True
-            else:
-                for descendant in descendants:
-                    if Nature.direct_descendants(descendant.children, individual):
-                        return True
+    def breedable(m1,m2):
+        return not Nature.are_family(m1, m2)
 
     @staticmethod
-    def breedable(male, female):
-        (m_father, m_mother) = male.parents if male.parents else ('', '')
-        (f_father, f_mother) = female.parents if female.parents else ('', '')
+    def are_family(member_1, member_2):
+        # print(f"===START:: Checking breedability between {member_1} and {member_2}")
 
-        # checks for siblings/half siblings
-        if m_father and m_mother and f_father and f_mother and (m_father == f_father or m_mother == f_mother):
+        (m1_father, m1_mother) = member_1.parents if member_1.parents else ('', '')
+        (m2_father, m2_mother) = member_2.parents if member_2.parents else ('', '')
+
+        is_family = False
+        # checks for siblings/half siblings directly
+        if m1_father and m1_mother and m2_father and m2_mother and (m1_father == m2_father or m1_mother == m2_mother):
+            is_family = True
+        elif Nature.trace_common_family(member_1, member_2, 1):
+            is_family = True
+
+        else:
+            is_family = False
+
+        # print(f"===END:: {member_1} and {member_2} are{' not' if not is_family else ''} a family")
+
+        return is_family
+
+    @staticmethod
+    def print_individual(individuals):
+        if type(individuals) == list or type(individuals) == set or type(individuals) == tuple:
+            _str = "["
+            for i in individuals:
+                _str += str(i) + ", "
+
+            _str += "]"
+            return _str
+        elif type(individuals) == Male or type(individuals) == Female:
+            return str(individuals)
+
+
+    @staticmethod
+    def trace_common_family(members_to_check_against, member, depth, back_ref=deque(maxlen=3)):
+        """Checks if member is a close family member based on Ancestors.DESCENDANCY_DEPTH"""
+
+        # print(f"Checking {member} at depth level:{str(depth)} against {Nature.print_individual(members_to_check_against)}")
+        if abs(depth) > Ancestors.DESCENDANCY_DEPTH:
+            # print("Max depth reached")
             return False
-
-        # checks if direct descendants
-        if Nature.direct_descendants(male.children, female):
+        elif not members_to_check_against:
+            # print("No further members to check")
             return False
+        elif type(members_to_check_against) == tuple or\
+                type(members_to_check_against) == list or\
+                type(members_to_check_against) == set:
 
-        # TODO find lowest common ancestor
+            if member in members_to_check_against:
+                # print("Family member found")
+                return True
+            else:
+                family_found = False
 
-        return True
+                for member_to_check in members_to_check_against:
+                    qpop = back_ref.popleft() if len(back_ref) > 0 else ''
+                    if qpop:
+                        back_ref.appendleft(qpop)
+
+                    if qpop != member_to_check:
+                        back_ref.append(member_to_check)
+                        family_found = Nature.trace_common_family(member_to_check,
+                                                                  member, abs(depth) + 1, back_ref)
+                    # else:
+                        # print(f"{member_to_check} skipped due to back reference {str(back_ref)}")
+
+                    if family_found:
+                        return True
+
+                return family_found
+
+        else:
+            q1 = back_ref.copy()
+            q2 = back_ref.copy()
+            if len(back_ref) == 0:
+                q1.append(members_to_check_against)
+                q2.append(members_to_check_against)
+
+            return Nature.trace_common_family(members_to_check_against.parents,
+                                              member, abs(depth),  q1) or \
+                   Nature.trace_common_family(members_to_check_against.children,
+                                              member, abs(depth),  q2)
 
 
     @staticmethod
@@ -154,7 +213,7 @@ class Nature:
                 return
 
             individual = self.reproduce(stronger_male, available_female)
-            
+
             if individual:
                 if individual.gender == Gender.MALE:
                     self.male_population.append(individual)
