@@ -21,10 +21,10 @@ class Threshold:
     HEALTH  = 10
     STRENGTH = 10
     SURVIVAL = 30
-    POPULATION = 200
+    POPULATION = 500
 
 class Index:
-    FITNESS = 50
+    FITNESS = 70
 
 class Ancestors:
     # They are like Adam and Eve, they don't have any parents
