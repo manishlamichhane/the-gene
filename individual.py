@@ -7,9 +7,6 @@ from choices import Gender
 from collections import namedtuple
 
 class Individual:
-    def __str__(self):
-        return self.name if self.name else str(self.id)
-
     def __init__(self, parents=(), **kwargs):
         # for logging and debugging
         self.id = uuid.uuid4()
@@ -30,15 +27,20 @@ class Individual:
             parents[1].children.append(self)
         self.children = []
 
+    def __str__(self):
+        return self.name if self.name else str(self.id)
+
     def grow_old(self):
         self.age += 1
         self.health += defaults.Cost.HEALTH
         self.intelligence += defaults.Cost.INTELLIGENCE
+        
         if self.age < 40:
             self.strength += defaults.Cost.STRENGTH
         else:
             self.strength -= defaults.Cost.STRENGTH
-        if type(self) == Female:
+        
+        if self.gender == Gender.FEMALE:
             self.is_pregnent = False
 
     @property
@@ -56,7 +58,14 @@ class Individual:
         opponent.health -= 10
         self.happiness += defaults.Cost.HAPPINESS
         self.intelligence += defaults.Cost.INTELLIGENCE
+    
+    @property
+    def is_male(self):
+        return self.gender == Gender.MALE
 
+    @property
+    def is_female(self):
+        return self.gender == Gender.FEMALE
 
 
 class Female(Individual):
@@ -72,5 +81,5 @@ class Male(Individual):
     def __init__(self, **kwargs):
         self.strength = kwargs.get('strength') or random.choice(range(50, 100, 5))
         self.is_fertile = kwargs.pop('is_fertile ') if 'is_fertile' in kwargs.keys() else random.choice((True, False))
-        self.masculinity = random.choice(range(0, 100, 5)) # NOTE(Manish): determins sex of off-spring
+        self.masculinity = random.choice(range(0, 100, 5)) # NOTE(Manish): determines sex of off-spring
         super().__init__(gender=Gender.MALE, **kwargs)
